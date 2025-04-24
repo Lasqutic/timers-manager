@@ -3,6 +3,8 @@ class TimersManager {
     #timers;
     #isRunning = false;
     #logs = [];
+    #MAX_DELAY_PLUS_MS = 10000;
+
     constructor() {
         this.#timers = [];
 
@@ -29,7 +31,7 @@ class TimersManager {
     }
 
     start() {
-        if (this.#timers.length === 0) {
+        if (!this.#timers.length) {
             console.log("No timers to start");
             return;
         }
@@ -42,7 +44,7 @@ class TimersManager {
         console.log("Timers have been started");
         this.#isRunning = true;
 
-        this.#stopTimersAfterMaxPlus(10000);
+        this.#stopTimersAfterMaxPlus(this.#MAX_DELAY_PLUS_MS);
 
         this.#timers.forEach(timer => {
             if (timer.completed) return;
@@ -68,7 +70,7 @@ class TimersManager {
                 timer.resolve();
             }
         });
-        console.log("The timers are stopped")
+        console.log("The timers are stopped");
     }
 
     dispose() {
@@ -97,7 +99,7 @@ class TimersManager {
     pause(name) {
         const timer = this.#findTimerByName(name)
         if (!timer) {
-            console.log(`Сan't pause "${name}" it's not found`)
+            console.log(`Сan't pause "${name}" it's not found`);
         }
         if (!timer.id) {
             console.log(`Can't pause "${name}" because it allready paused`);
@@ -130,7 +132,7 @@ class TimersManager {
     async print() {
         await Promise.all(this.#timers.map(t => t.promise));
 
-        if (this.#logs.length === 0) {
+        if (!this.#logs.length) {
             console.log("No logs to print");
             return;
         }

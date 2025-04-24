@@ -21,11 +21,11 @@ class TimersManager {
             throw new Error(`Timer with name "${timer.name}" already exists`);
         }
 
-        this.#validate(timer)
-        this.#timers.push({ ...timer, startTime: null, remaining: null, args, id: null, completed: false });
+        this.#validate(timer);
+
+        const timerEntry = this.#createTimer(timer, args);
+        this.#timers.push(timerEntry);
         return this;
-
-
     }
 
     start() {
@@ -154,6 +154,17 @@ class TimersManager {
         }
 
         timer.remaining = null;
+    }
+
+    #createTimer(timer, args) {
+        return {
+            ...timer,
+            startTime: null,
+            remaining: null,
+            args,
+            id: null,
+            completed: false
+        };
     }
 
     #validate(timer) {
